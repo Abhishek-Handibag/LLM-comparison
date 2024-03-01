@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language Model Comparison</title>
+<style>
+    /* Add your custom styles here */
+</style>
+</head>
+<body>
+<h1>Language Model Comparison</h1>
+<div>
+    <label for="prompt">Enter Prompt:</label>
+    <input type="text" id="prompt" placeholder="Enter your prompt here">
+    <button onclick="generateOutputs()">Generate Outputs</button>
+</div>
+<div id="output-container">
+    <div id="cohere-output" style="margin-bottom: 20px;">
+        <h2>Cohere Output</h2>
+        <p id="cohere-response"></p>
+    </div>
+    <div id="gpt-output">
+        <h2>GPT-3.5 Turbo Output</h2>
+        <p id="gpt-response"></p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/cohere-js-sdk@0.3.0/dist/browser/cohere.min.js"></script>
+<script>
+    const co = new Cohere('D64OaZ9AtFWKEWrtaPTpKMFpaz5qfmLjrUESEyu0');
+
+    function generateOutputs() {
+        const prompt = document.getElementById('prompt').value;
+
+        // Cohere Output
+        co.chat(prompt, { model: "command", temperature: 0.9 }).then(response => {
+            document.getElementById('cohere-response').textContent = response.text;
+        }).catch(error => {
+            console.error('Cohere Error:', error);
+        });
+
+        // GPT-3.5 Turbo Output
+        fetch('https://api.openai.com/v1/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer YOUR_OPENAI_API_KEY' // Replace with your OpenAI API key
+            },
+            body: JSON.stringify({
+                model: "text-davinci-003",
+                prompt: prompt,
+                temperature: 0.9,
+                max_tokens: 150
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('gpt-response').textContent = data.choices[0].text.trim();
+        })
+        .catch(error => {
+            console.error('GPT-3.5 Turbo Error:', error);
+        });
+    }
+</script>
+</body>
+</html>
