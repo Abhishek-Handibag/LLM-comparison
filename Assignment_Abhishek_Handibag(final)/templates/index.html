@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Model Comparison</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    /* Add your custom styles here */
+    .container {
+        margin-top: 50px;
+    }
+    .output {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center mb-5">Model Comparison</h1>
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <form action="/" method="post">
+                <div class="form-group">
+                    <label for="prompt">Enter Prompt:</label>
+                    <input type="text" id="prompt" name="prompt" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Generate Outputs</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            {% if generated_cohere_text %}
+            <div class="output">
+                <h2 class="mb-3">Cohere Output</h2>
+                <p><strong>Prompt:</strong> {{ request.form['prompt'] }}</p>
+                <p>{{ generated_cohere_text }}</p>
+            </div>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            {% if generated_chatgpt_text %}
+            <div class="output">
+                <h2 class="mb-3">ChatGPT Output</h2>
+                <p><strong>Prompt:</strong> {{ request.form['prompt'] }}</p>
+                <p>{{ generated_chatgpt_text }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
